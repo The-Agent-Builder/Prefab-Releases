@@ -12,8 +12,16 @@ try:
     import requests
 except ImportError:
     print("❌ Missing required dependencies. Please install:")
-    print("   pip install jsonschema requests")
+    print("   uv add --dev jsonschema requests")
     sys.exit(1)
+
+
+def construct_artifact_url(entry):
+    """根据约定构造 artifact URL"""
+    repo_url = entry['repo_url'].rstrip('/')
+    version = entry['version']
+    prefab_id = entry['id']
+    return f"{repo_url}/releases/download/v{version}/{prefab_id}-{version}.whl"
 
 
 def print_step(step: str, msg: str):
@@ -93,7 +101,7 @@ def check_required_fields(data):
     """检查必填字段"""
     print_step("STEP 4", "检查必填字段")
 
-    required_fields = ['id', 'version', 'author', 'repo_url', 'artifact_url', 'name', 'description']
+    required_fields = ['id', 'version', 'author', 'repo_url', 'name', 'description']
 
     for i, item in enumerate(data):
         item_id = item.get('id', f'item-{i}')
@@ -122,11 +130,6 @@ def check_url_format(data):
         if not repo_url.startswith('https://github.com/'):
             errors.append(f"   - {item_id}: repo_url 必须是 GitHub URL")
 
-        # 检查 artifact_url
-        artifact_url = item.get('artifact_url', '')
-        if not artifact_url.endswith('.whl'):
-            errors.append(f"   - {item_id}: artifact_url 必须以 .whl 结尾")
-
     if errors:
         print("❌ 发现 URL 格式错误:")
         for error in errors:
@@ -148,18 +151,19 @@ def check_artifact_accessibility(data, check_all=False):
 
     for item in data:
         item_id = item['id']
-        artifact_url = item['artifact_url']
+        artifact_url = construct_artifact_url(item)
 
         print(f"  检查: {item_id} ... ", end='', flush=True)
+        print(f"\n    URL: {artifact_url}")
 
         try:
             response = requests.head(artifact_url, allow_redirects=True, timeout=10)
             if 200 <= response.status_code < 300:
-                print("✅")
+                print("    ✅")
             else:
-                print(f"❌ (HTTP {response.status_code})")
+                print(f"    ❌ (HTTP {response.status_code})")
         except requests.RequestException as e:
-            print(f"❌ ({e})")
+            print(f"    ❌ ({e})")
 
 
 def print_summary(data):
@@ -183,6 +187,8 @@ def print_summary(data):
     print("\n" + "="*60)
     print("🎉 所有验证通过！你可以提交 PR 了。")
     print("="*60)
+    print("\n提示: artifact_url 将自动构造为:")
+    print("  {repo_url}/releases/download/v{version}/{id}-{version}.whl")
 
 
 def main():
@@ -225,4 +231,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

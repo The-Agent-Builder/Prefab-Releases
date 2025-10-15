@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 """
-检查 artifact_url 的可达性
+检查 artifact_url 的可达性（URL 自动构造）
 """
 import json
 import sys
 from pathlib import Path
 
 import requests
+
+
+def construct_artifact_url(entry):
+    """根据约定构造 artifact URL"""
+    repo_url = entry['repo_url'].rstrip('/')
+    version = entry['version']
+    prefab_id = entry['id']
+    return f"{repo_url}/releases/download/v{version}/{prefab_id}-{version}.whl"
 
 
 def main():
@@ -16,12 +24,10 @@ def main():
         changed_entry_path = Path('changed_entry.json')
         changed_entry = json.loads(changed_entry_path.read_text())
 
-        artifact_url = changed_entry.get('artifact_url')
-        if not artifact_url:
-            print("::error::artifact_url field is missing")
-            sys.exit(1)
-
-        print(f"Checking artifact URL: {artifact_url}")
+        # 构造 artifact URL
+        artifact_url = construct_artifact_url(changed_entry)
+        print(f"构造的 artifact_url: {artifact_url}")
+        print(f"  规则: {{repo_url}}/releases/download/v{{version}}/{{id}}-{{version}}.whl")
 
         # 发送 HEAD 请求检查 URL 可达性
         try:
@@ -29,6 +35,7 @@ def main():
 
             if response.status_code < 200 or response.status_code >= 300:
                 print(f"::error::artifact_url returned status code {response.status_code}")
+                print(f"::error::请确保 GitHub Release 存在且文件名符合规范")
                 print(f"URL: {artifact_url}")
                 sys.exit(1)
 
@@ -67,4 +74,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

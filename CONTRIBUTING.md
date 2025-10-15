@@ -98,7 +98,6 @@ git checkout -b publish/your-prefab-id-1.0.0
     "version": "1.0.0",
     "author": "your-github-username",
     "repo_url": "https://github.com/your-username/your-prefab-repo",
-    "artifact_url": "https://github.com/your-username/your-prefab-repo/releases/download/v1.0.0/your-prefab-1.0.0.whl",
     "name": "你的预制件名称",
     "description": "详细描述你的预制件功能，包括主要特性和使用场景",
     "tags": ["category1", "feature1", "tool-name"]

@@ -11,6 +11,14 @@ from pathlib import Path
 import requests
 
 
+def construct_artifact_url(entry):
+    """根据约定构造 artifact URL"""
+    repo_url = entry['repo_url'].rstrip('/')
+    version = entry['version']
+    prefab_id = entry['id']
+    return f"{repo_url}/releases/download/v{version}/{prefab_id}-{version}.whl"
+
+
 def main():
     """主函数"""
     try:
@@ -18,7 +26,7 @@ def main():
         changed_entry_path = Path('changed_entry.json')
         changed_entry = json.loads(changed_entry_path.read_text())
 
-        artifact_url = changed_entry['artifact_url']
+        artifact_url = construct_artifact_url(changed_entry)
         pr_id = changed_entry['id']
         pr_version = changed_entry['version']
 
@@ -119,4 +127,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

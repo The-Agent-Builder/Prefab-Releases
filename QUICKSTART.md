@@ -49,12 +49,14 @@ git checkout -b publish/my-prefab-1.0.0
   "version": "1.0.0",
   "author": "your-github-username",
   "repo_url": "https://github.com/your-username/your-prefab-repo",
-  "artifact_url": "https://github.com/your-username/your-prefab-repo/releases/download/v1.0.0/your-prefab-1.0.0.whl",
   "name": "我的预制件",
   "description": "这是一个示例预制件，用于演示如何发布",
   "tags": ["example", "demo"]
 }
 ```
+
+> **提示**：artifact URL 将自动构造为：  
+> `https://github.com/your-username/your-prefab-repo/releases/download/v1.0.0/my-prefab-id-1.0.0.whl`
 
 ### 第 4 步：本地验证（推荐）
 

@@ -10,7 +10,6 @@
       "version",
       "author",
       "repo_url",
-      "artifact_url",
       "name",
       "description"
     ],
@@ -35,15 +34,9 @@
       },
       "repo_url": {
         "type": "string",
-        "description": "URL to the source code repository",
+        "description": "URL to the source code repository (artifact will be auto-constructed: {repo_url}/releases/download/v{version}/{id}-{version}.whl)",
         "format": "uri",
         "pattern": "^https://github\\.com/[^/]+/[^/]+/?$"
-      },
-      "artifact_url": {
-        "type": "string",
-        "description": "URL to the .whl file in GitHub Releases",
-        "format": "uri",
-        "pattern": "^https://.*\\.whl$"
       },
       "name": {
         "type": "string",
@@ -71,4 +64,3 @@
     "additionalProperties": false
   }
 }
-

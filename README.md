@@ -63,12 +63,14 @@ prefab-releases/
      "version": "1.0.0",
      "author": "your-github-username",
      "repo_url": "https://github.com/your-username/your-prefab-repo",
-     "artifact_url": "https://github.com/your-username/your-prefab-repo/releases/download/v1.0.0/your-prefab-1.0.0.whl",
      "name": "你的预制件名称",
      "description": "详细描述你的预制件功能，至少10个字符",
      "tags": ["tag1", "tag2", "tag3"]
    }
    ```
+
+   > **注意**：`artifact_url` 会自动构造为：`{repo_url}/releases/download/v{version}/{id}-{version}.whl`  
+   > 请确保你的 GitHub Release 文件名符合此规范！
 
 4. **提交并创建 Pull Request**
    ```bash

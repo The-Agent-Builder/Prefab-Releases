@@ -1,2 +1,11 @@
-[]
-
+[
+  {
+    "id": "hello-world-example",
+    "version": "1.0.0",
+    "author": "contributor-demo",
+    "repo_url": "https://github.com/contributor-demo/hello-world-prefab",
+    "name": "Hello World 示例预制件",
+    "description": "一个简单的 Hello World 预制件，用于演示如何提交到 Prefab-Releases 仓库",
+    "tags": ["example", "demo", "hello-world"]
+  }
+]

@@ -42,7 +42,7 @@ prefab-releases/
 ### 对于贡献者：发布你的预制件
 
 1. **准备你的预制件**
-   - 使用 [Prefab-Template](https://github.com/your-org/Prefab-Template) 创建预制件
+   - 使用 [Prefab-Template](https://github.com/The-Agent-Builder/Prefab-Template) 创建预制件
    - 确保通过所有本地测试和验证
    - 在你的仓库中创建 Release 并上传 `.whl` 文件
 
@@ -226,7 +226,7 @@ cat community-prefabs.json | jq '.[] | select(.id=="your-prefab-id")'
 我们欢迎社区贡献！在提交 PR 之前，请阅读：
 
 - [贡献指南](CONTRIBUTING.md) - 详细的提交流程和规范
-- [Prefab-Template](https://github.com/your-org/Prefab-Template) - 预制件模板仓库
+- [Prefab-Template](https://github.com/The-Agent-Builder/Prefab-Template) - 预制件模板仓库
 
 ## 📝 常见问题
 
@@ -256,8 +256,8 @@ A: 已发布的预制件不建议删除，因为可能有用户依赖。如果�
 
 ## 📞 联系方式
 
-- 🐛 报告问题：[GitHub Issues](https://github.com/your-org/prefab-releases/issues)
-- 💬 讨论交流：[GitHub Discussions](https://github.com/your-org/prefab-releases/discussions)
+- 🐛 报告问题：[GitHub Issues](https://github.com/The-Agent-Builder/Prefab-Releases/issues)
+- 💬 讨论交流：[GitHub Discussions](https://github.com/The-Agent-Builder/Prefab-Releases/discussions)
 - 📧 邮件联系：maintainers@example.com
 
 ## 📄 许可证

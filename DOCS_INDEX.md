@@ -15,7 +15,7 @@
    - 编写规范和最佳实践
    - 故障排除
    
-3. **模板文档** → [Prefab-Template](https://github.com/your-org/Prefab-Template)
+3. **模板文档** → [Prefab-Template](https://github.com/The-Agent-Builder/Prefab-Template)
    - 如何开发预制件
 
 ### 👀 维护者（审核者）
@@ -133,13 +133,13 @@ prefab-releases/
 
 ## 🔗 外部资源
 
-- [Prefab-Template](https://github.com/your-org/Prefab-Template) - 预制件开发模板
+- [Prefab-Template](https://github.com/The-Agent-Builder/Prefab-Template) - 预制件开发模板
 - [项目官网](https://your-website.com) - 官方文档站点
 
 ## 📞 获取帮助
 
-- 🐛 **Bug 报告**: [GitHub Issues](https://github.com/your-org/prefab-releases/issues)
-- 💬 **讨论交流**: [GitHub Discussions](https://github.com/your-org/prefab-releases/discussions)
+- 🐛 **Bug 报告**: [GitHub Issues](https://github.com/The-Agent-Builder/Prefab-Releases/issues)
+- 💬 **讨论交流**: [GitHub Discussions](https://github.com/The-Agent-Builder/Prefab-Releases/discussions)
 - 📧 **邮件联系**: maintainers@example.com
 
 ---

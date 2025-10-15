@@ -30,7 +30,7 @@
 
 ```bash
 # 1. 克隆模板仓库
-git clone https://github.com/your-org/Prefab-Template.git my-prefab
+git clone https://github.com/The-Agent-Builder/Prefab-Template.git my-prefab
 cd my-prefab
 
 # 2. 安装依赖
@@ -50,7 +50,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-详细的预制件开发指南请参考 [Prefab-Template 文档](https://github.com/your-org/Prefab-Template)。
+详细的预制件开发指南请参考 [Prefab-Template 文档](https://github.com/The-Agent-Builder/Prefab-Template)。
 
 ### 2. 发布你的构件
 
@@ -469,8 +469,8 @@ cat community-prefabs.json | jq '.[] | select(.tags[] | contains("video"))'
 
 ## 📞 联系我们
 
-- 🐛 **报告问题**：[GitHub Issues](https://github.com/your-org/prefab-releases/issues)
-- 💬 **讨论交流**：[GitHub Discussions](https://github.com/your-org/prefab-releases/discussions)
+- 🐛 **报告问题**：[GitHub Issues](https://github.com/The-Agent-Builder/Prefab-Releases/issues)
+- 💬 **讨论交流**：[GitHub Discussions](https://github.com/The-Agent-Builder/Prefab-Releases/discussions)
 - 📧 **邮件联系**：maintainers@example.com
 
 ---

@@ -4,7 +4,7 @@
 
 ## 📋 前提条件
 
-- ✅ 已有一个基于 [Prefab-Template](https://github.com/your-org/Prefab-Template) 开发的预制件
+- ✅ 已有一个基于 [Prefab-Template](https://github.com/The-Agent-Builder/Prefab-Template) 开发的预制件
 - ✅ 预制件通过了所有本地测试
 - ✅ 有 GitHub 账号
 
@@ -29,7 +29,7 @@ git push origin v1.0.0
 
 ### 第 2 步：Fork prefab-releases 仓库
 
-访问 https://github.com/your-org/prefab-releases 并点击 "Fork"。
+访问 https://github.com/The-Agent-Builder/Prefab-Releases 并点击 "Fork"。
 
 ### 第 3 步：添加你的条目
 
@@ -104,7 +104,7 @@ git push origin publish/my-prefab-1.0.0
 
 - [完整文档](README.md)
 - [贡献指南](CONTRIBUTING.md)
-- [预制件模板](https://github.com/your-org/Prefab-Template)
+- [预制件模板](https://github.com/The-Agent-Builder/Prefab-Template)
 
 ---
 

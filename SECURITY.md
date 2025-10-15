@@ -165,7 +165,7 @@
 
 - 🔒 **安全报告**：security@example.com
 - 💬 **一般咨询**：maintainers@example.com
-- 🐛 **非安全 Bug**：[GitHub Issues](https://github.com/your-org/prefab-releases/issues)
+- 🐛 **非安全 Bug**：[GitHub Issues](https://github.com/The-Agent-Builder/Prefab-Releases/issues)
 
 ## 参考资源
 

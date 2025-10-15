@@ -106,7 +106,7 @@ git commit -m "chore: initial repository setup
 "
 
 # 添加远程仓库
-git remote add origin https://github.com/your-org/prefab-releases.git
+git remote add origin https://github.com/The-Agent-Builder/Prefab-Releases.git
 
 # 推送到 main 分支
 git branch -M main

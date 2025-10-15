@@ -240,7 +240,7 @@ git push origin publish/your-prefab-id-1.0.0
 | **文件修改** | 只能修改 `community-prefabs.json` | 不要修改其他文件 |
 | **JSON 格式** | 验证 JSON 语法正确性 | 检查逗号、括号、引号 |
 | **Schema 验证** | 验证字段类型和格式 | 确保所有必填字段存在 |
-| **URL 可达性** | 检查 artifact_url 可访问 | Release 必须是 public |
+| **URL 可达性** | 检查自动构造的 .whl URL 可访问 | Release 必须是 public |
 | **Manifest 一致性** | 验证 .whl 中的 manifest | id 和 version 必须匹配 |
 | **重复检查** | 确保没有重复条目 | (id, version) 必须唯一 |
 
@@ -377,7 +377,7 @@ python3 -c "import json; json.load(open('community-prefabs.json'))"
 
 #### 2. URL 不可访问
 
-**错误信息**：`Failed to access artifact_url`
+**错误信息**：`Failed to access artifact URL`
 
 **解决方法**：
 1. 确认 Release 是 public 的

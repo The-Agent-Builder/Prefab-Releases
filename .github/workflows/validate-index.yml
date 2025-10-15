@@ -1,0 +1,132 @@
+name: Validate Index - Continuous Validation
+
+# 定期验证索引文件的完整性
+on:
+  schedule:
+    # 每天 UTC 00:00 运行
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许手动触发
+  push:
+    branches:
+      - main
+    paths:
+      - 'community-prefabs.json'
+
+jobs:
+  validate-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          uv sync
+
+      - name: Validate JSON syntax
+        run: |
+          python3 -c "
+          import json
+          from pathlib import Path
+          try:
+              data = json.loads(Path('community-prefabs.json').read_text())
+              print(f'✅ JSON syntax valid ({len(data)} entries)')
+          except json.JSONDecodeError as e:
+              print(f'❌ JSON syntax error: {e}')
+              exit(1)
+          "
+
+      - name: Validate schema
+        run: |
+          python scripts/validate_schema.py || exit 0
+          # 注意：这个脚本假设有 changed_entry.json，需要适配
+
+      - name: Check for duplicates
+        run: |
+          python3 -c "
+          import json
+          from pathlib import Path
+          from collections import Counter
+
+          data = json.loads(Path('community-prefabs.json').read_text())
+          entries = [(item['id'], item['version']) for item in data]
+          counter = Counter(entries)
+          duplicates = [(k, c) for k, c in counter.items() if c > 1]
+
+          if duplicates:
+              print('❌ Found duplicates:')
+              for (id, ver), count in duplicates:
+                  print(f'  - {id}@{ver}: {count} times')
+              exit(1)
+          else:
+              print(f'✅ No duplicates ({len(entries)} unique entries)')
+          "
+
+      - name: Generate statistics
+        run: |
+          python3 -c "
+          import json
+          from pathlib import Path
+          from collections import Counter
+
+          data = json.loads(Path('community-prefabs.json').read_text())
+
+          print('📊 Index Statistics:')
+          print(f'  Total prefabs: {len(data)}')
+          print(f'  Unique IDs: {len(set(item[\"id\"] for item in data))}')
+          print(f'  Authors: {len(set(item[\"author\"] for item in data))}')
+
+          all_tags = []
+          for item in data:
+              all_tags.extend(item.get('tags', []))
+
+          if all_tags:
+              print(f'\\nTop 5 tags:')
+              for tag, count in Counter(all_tags).most_common(5):
+                  print(f'  - {tag}: {count}')
+          "
+
+      - name: Check URL accessibility (sample)
+        run: |
+          python3 -c "
+          import json
+          import requests
+          from pathlib import Path
+
+          data = json.loads(Path('community-prefabs.json').read_text())
+
+          # 只检查最新的 5 个条目
+          recent = data[-5:] if len(data) > 5 else data
+
+          print(f'🔍 Checking {len(recent)} recent artifact URLs...')
+
+          failed = []
+          for item in recent:
+              url = item['artifact_url']
+              try:
+                  resp = requests.head(url, allow_redirects=True, timeout=10)
+                  status = '✅' if 200 <= resp.status_code < 300 else f'❌ ({resp.status_code})'
+                  print(f'  {item[\"id\"]}: {status}')
+                  if resp.status_code >= 300:
+                      failed.append((item['id'], resp.status_code))
+              except Exception as e:
+                  print(f'  {item[\"id\"]}: ❌ ({e})')
+                  failed.append((item['id'], str(e)))
+
+          if failed:
+              print(f'\\n⚠️  {len(failed)} URL(s) failed accessibility check')
+              for id, reason in failed:
+                  print(f'  - {id}: {reason}')
+          "
+

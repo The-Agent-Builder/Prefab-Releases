@@ -1,0 +1,74 @@
+name: PR Check - Validate Prefab Submission
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'community-prefabs.json'
+
+jobs:
+  validate-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: |
+          uv sync
+
+      - name: Check only community-prefabs.json is modified
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "Changed files: $CHANGED_FILES"
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "::error::No files changed in this PR"
+            exit 1
+          fi
+
+          # Only allow community-prefabs.json to be modified
+          if [ "$CHANGED_FILES" != "community-prefabs.json" ]; then
+            echo "::error::Only community-prefabs.json should be modified. Found changes in: $CHANGED_FILES"
+            exit 1
+          fi
+
+      - name: Extract changed entry
+        id: extract
+        run: |
+          uv run python3 scripts/extract_pr_changes.py
+
+      - name: Validate JSON Schema
+        run: |
+          uv run python3 scripts/validate_schema.py
+
+      - name: Check artifact URL accessibility
+        run: |
+          uv run python3 scripts/check_artifact_url.py
+
+      - name: Download and verify artifact
+        run: |
+          uv run python3 scripts/verify_artifact.py
+
+      - name: Check for duplicate entries
+        run: |
+          uv run python3 scripts/check_duplicates.py
+
+      - name: All checks passed
+        run: |
+          echo "✅ All validation checks passed!"
+          echo "::notice::PR is ready for human review"
+

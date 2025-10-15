@@ -40,14 +40,7 @@ def main():
             print(f"Failed at path: {' -> '.join(str(p) for p in e.path)}")
             sys.exit(1)
 
-        # 额外验证：检查必填字段
-        required_fields = ['id', 'version', 'author', 'repo_url', 'artifact_url', 'name', 'description']
-        missing_fields = [field for field in required_fields if field not in changed_entry]
-
-        if missing_fields:
-            print(f"::error::Missing required fields: {', '.join(missing_fields)}")
-            sys.exit(1)
-
+        # Schema 验证已经包含了必填字段检查，无需额外验证
         print("✅ All schema validations passed")
 
     except FileNotFoundError as e:

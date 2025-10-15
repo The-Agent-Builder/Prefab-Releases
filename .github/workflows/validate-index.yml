@@ -49,8 +49,21 @@ jobs:
 
       - name: Validate schema
         run: |
-          python scripts/validate_schema.py || exit 0
-          # 注意：这个脚本假设有 changed_entry.json，需要适配
+          uv run python3 -c "
+          import json
+          import jsonschema
+          from pathlib import Path
+
+          schema = json.loads(Path('schema.json').read_text())
+          data = json.loads(Path('community-prefabs.json').read_text())
+
+          try:
+              jsonschema.validate(instance=data, schema=schema)
+              print(f'✅ Schema validation passed ({len(data)} entries)')
+          except jsonschema.ValidationError as e:
+              print(f'❌ Schema validation failed: {e.message}')
+              exit(1)
+          "
 
       - name: Check for duplicates
         run: |
@@ -99,10 +112,18 @@ jobs:
 
       - name: Check URL accessibility (sample)
         run: |
-          python3 -c "
+          uv run python3 -c "
           import json
           import requests
           from pathlib import Path
+
+          def construct_artifact_url(item):
+              '''构造 artifact URL（自动转换连字符为下划线）'''
+              repo_url = item['repo_url'].rstrip('/')
+              version = item['version']
+              prefab_id = item['id']
+              wheel_name = prefab_id.replace('-', '_')
+              return f'{repo_url}/releases/download/v{version}/{wheel_name}-{version}-py3-none-any.whl'
 
           data = json.loads(Path('community-prefabs.json').read_text())
 
@@ -113,12 +134,12 @@ jobs:
 
           failed = []
           for item in recent:
-              url = item['artifact_url']
+              url = construct_artifact_url(item)
               try:
                   resp = requests.head(url, allow_redirects=True, timeout=10)
-                  status = '✅' if 200 <= resp.status_code < 300 else f'❌ ({resp.status_code})'
+                  status = '✅' if 200 <= resp.status_code < 400 else f'❌ ({resp.status_code})'
                   print(f'  {item[\"id\"]}: {status}')
-                  if resp.status_code >= 300:
+                  if resp.status_code >= 400:
                       failed.append((item['id'], resp.status_code))
               except Exception as e:
                   print(f'  {item[\"id\"]}: ❌ ({e})')

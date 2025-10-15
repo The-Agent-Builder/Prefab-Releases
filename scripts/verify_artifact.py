@@ -12,11 +12,17 @@ import requests
 
 
 def construct_artifact_url(entry):
-    """根据约定构造 artifact URL"""
+    """根据约定构造 artifact URL
+
+    注意：Python wheel 文件名会将连字符转换为下划线
+    例如：hello-world-test → hello_world_test
+    """
     repo_url = entry['repo_url'].rstrip('/')
     version = entry['version']
     prefab_id = entry['id']
-    return f"{repo_url}/releases/download/v{version}/{prefab_id}-{version}.whl"
+    # 将 ID 中的连字符转换为下划线（符合 Python wheel 命名规范）
+    wheel_name = prefab_id.replace('-', '_')
+    return f"{repo_url}/releases/download/v{version}/{wheel_name}-{version}-py3-none-any.whl"
 
 
 def main():

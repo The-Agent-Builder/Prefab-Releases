@@ -1,2 +1,12 @@
-[]
+[
+  {
+    "id": "hello-world-prefab-test",
+    "version": "0.1.3",
+    "author": "ketd",
+    "repo_url": "https://github.com/ketd/hello-world-prefab",
+    "name": "你的预制件名称",
+    "description": "详细描述你的预制件功能，至少10个字符",
+    "tags": ["tag1", "tag2", "tag3"]
+  }
+]
 

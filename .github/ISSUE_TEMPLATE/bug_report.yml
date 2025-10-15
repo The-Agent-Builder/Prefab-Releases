@@ -1,0 +1,54 @@
+name: 🐛 Bug Report
+description: 报告一个问题或错误
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你报告问题！请填写以下信息以帮助我们更快地定位和解决问题。
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+      description: 清晰简洁地描述遇到的问题
+      placeholder: 告诉我们发生了什么...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重现步骤
+      description: 如何重现这个问题？
+      placeholder: |
+        1. 进入 '...'
+        2. 点击 '...'
+        3. 滚动到 '...'
+        4. 看到错误
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 你期望发生什么？
+      placeholder: 告诉我们你期望看到什么...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志
+      description: 如果适用，请粘贴相关的错误信息或日志
+      render: shell
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 其他上下文
+      description: 关于这个问题的任何其他信息
+      placeholder: 添加任何其他相关信息...

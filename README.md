@@ -121,7 +121,6 @@ prefab-releases/
     "name": "string",         // 人类可读的名称
     "description": "string",  // 详细描述
     "tags": ["string"]        // 标签数组（可选）
-    // 注: artifact_url 自动构造为 {repo_url}/releases/download/v{version}/{id}-{version}.whl
   }
 ]
 ```

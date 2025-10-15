@@ -9,7 +9,6 @@ title: "feat(publish): <prefab-id>@<version>"
 - **版本号:** `[your-version]`
 - **作者:** `[your-github-username]`
 - **源码仓库:** `[repo-url]`
-- **构件 URL:** `[artifact-url]`
 
 ## 提交清单
 

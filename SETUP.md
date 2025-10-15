@@ -266,12 +266,16 @@ git push origin test/pr-check
 
 #### 1. 分支保护规则（main 分支）✅
 - [x] 要求 Pull Request 审核（1 个批准）
-- [x] 要求状态检查通过（`validate-pr`）
 - [x] 要求对话解决
 - [x] 对管理员也生效
 - [x] 禁止强制推送
 - [x] 禁止删除分支
 - [x] 撤销过时的 PR 批准
+- [ ] ~~要求状态检查通过~~ （暂不设置，等第一个预制件 PR 后再配置）
+
+> **注意**：`validate-pr` 检查只对修改 `community-prefabs.json` 的 PR 触发。
+> 为避免文档类 PR 被阻塞，暂不设为必需检查。待首个预制件 PR 提交后，
+> GitHub 会自动识别该检查，届时可在分支保护设置中将其设为必需。
 
 #### 2. 仓库功能 ✅
 - [x] Issues 已启用

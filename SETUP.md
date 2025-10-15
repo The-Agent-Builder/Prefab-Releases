@@ -16,16 +16,16 @@
 进入 `Settings > Branches > Add rule`:
 
 - [x] 分支名称模式：`main`
-- [ ] ✅ Require a pull request before merging
-  - [ ] ✅ Require approvals: 1
-  - [ ] ✅ Dismiss stale pull request approvals
-- [ ] ✅ Require status checks to pass before merging
-  - [ ] ✅ Require branches to be up to date
-  - [ ] 添加必需检查：`validate-pr`
-- [ ] ✅ Require conversation resolution before merging
-- [ ] ✅ Include administrators
-- [ ] ✅ Restrict who can push to matching branches
-  - 添加维护者团队
+- [x] ✅ Require a pull request before merging
+  - [x] ✅ Require approvals: 1
+  - [x] ✅ Dismiss stale pull request approvals
+- [x] ✅ Require status checks to pass before merging
+  - [x] ✅ Require branches to be up to date
+  - [x] 添加必需检查：`validate-pr`
+- [x] ✅ Require conversation resolution before merging
+- [x] ✅ Include administrators
+- [x] ✅ Allow force pushes: 禁用
+- [x] ✅ Allow deletions: 禁用
 
 #### 权限设置
 进入 `Settings > Collaborators and teams`:
@@ -38,13 +38,20 @@
 
 进入 `Settings > Actions > General`:
 
-- [ ] **Actions permissions**: 
+- [x] **Actions permissions**: 
   - ✅ Allow all actions and reusable workflows
-- [ ] **Workflow permissions**:
+- [x] **Workflow permissions**:
   - ✅ Read repository contents and packages permissions
-- [ ] **Allow GitHub Actions to create and approve pull requests**: ❌
+- [x] **Allow GitHub Actions to create and approve pull requests**: ❌
 
 **注意**：本仓库采用被动同步模式，不需要配置任何 Secrets 或 Webhooks。
+
+#### Dependabot 配置
+
+- [x] 启用 Dependabot 安全更新
+- [x] 创建 `.github/dependabot.yml` 配置文件
+  - [x] GitHub Actions 依赖（每周更新）
+  - [x] Python 依赖（每周更新）
 
 ### 3. 依赖安装
 
@@ -134,9 +141,19 @@ git push origin test/pr-check
 ```
 
 检查项：
-- [ ] PR 检查自动触发
-- [ ] 所有验证步骤运行
-- [ ] 错误信息清晰可读
+- [x] PR 检查自动触发
+- [x] 所有验证步骤运行
+- [x] 错误信息清晰可读
+- [x] 分支保护规则生效
+
+#### Issue 模板和自动化
+
+- [x] 创建 Bug Report 模板 (`.github/ISSUE_TEMPLATE/bug_report.yml`)
+- [x] 创建 Feature Request 模板 (`.github/ISSUE_TEMPLATE/feature_request.yml`)
+- [x] 配置 Issue 模板选择器 (`.github/ISSUE_TEMPLATE/config.yml`)
+- [x] 创建 Stale Bot 工作流 (`.github/workflows/stale.yml`)
+  - Issues: 30 天无活动后标记，7 天后关闭
+  - PRs: 14 天无活动后标记，7 天后关闭
 
 ### 7. 团队设置
 
@@ -243,45 +260,112 @@ git push origin test/pr-check
 
 ---
 
-**最后更新**: 2024-01-XX
-
-如有问题，请联系平台技术团队。
-
-
 ## ✅ 配置完成状态
 
-### 已完成的配置
+### 通过 GitHub CLI 完成的配置
 
-- [x] ✅ 启用 Issues
-- [x] ✅ 启用 Discussions  
-- [x] ✅ 启用 Dependabot 安全更新
-- [x] ✅ 配置分支保护规则
-  - [x] 要求 PR 审核（1 个批准）
-  - [x] 要求状态检查通过
-  - [x] 要求对话解决
-  - [x] 对管理员也生效
-- [x] ✅ 配置仓库主题标签
-- [x] ✅ 创建 Dependabot 自动更新配置
-- [x] ✅ 创建 Issue 模板（Bug/Feature）
-- [x] ✅ 创建自动关闭陈旧 Issues/PRs 工作流
+#### 1. 分支保护规则（main 分支）✅
+- [x] 要求 Pull Request 审核（1 个批准）
+- [x] 要求状态检查通过（`validate-pr`）
+- [x] 要求对话解决
+- [x] 对管理员也生效
+- [x] 禁止强制推送
+- [x] 禁止删除分支
+- [x] 撤销过时的 PR 批准
 
-### 手动配置项
+#### 2. 仓库功能 ✅
+- [x] Issues 已启用
+- [x] Discussions 已启用
+- [x] Projects 已启用
+- [x] Wiki 已禁用
+
+#### 3. Dependabot 配置 ✅
+- [x] Dependabot 安全更新已启用
+- [x] 创建 `.github/dependabot.yml`
+  - GitHub Actions 依赖（每周更新）
+  - Python 依赖（每周更新）
+  - 自动标签：`dependencies`
+
+#### 4. Issue 模板 ✅
+- [x] Bug Report 模板（`.github/ISSUE_TEMPLATE/bug_report.yml`）
+- [x] Feature Request 模板（`.github/ISSUE_TEMPLATE/feature_request.yml`）
+- [x] Issue 模板配置（`.github/ISSUE_TEMPLATE/config.yml`）
+  - 链接到文档
+  - 链接到 Discussions
+
+#### 5. 自动化工作流 ✅
+- [x] PR 检查工作流（`.github/workflows/pr-check.yml`）
+  - 提取变更
+  - Schema 验证
+  - URL 可访问性检查
+  - 构件验证
+  - 重复检查
+- [x] 定期索引验证（`.github/workflows/validate-index.yml`）
+  - 每天凌晨运行
+  - 全量验证
+- [x] Stale Bot（`.github/workflows/stale.yml`）
+  - Issues: 30天 → 标记 stale → 7天后关闭
+  - PRs: 14天 → 标记 stale → 7天后关闭
+
+#### 6. 仓库主题标签
+- [x] ai, prefab, automation, ci-cd (已存在)
+- ⚠️  尝试添加但 API 格式问题未成功: python, knative, serverless
+- 💡 **需要手动添加**：进入 Settings > About > Topics
+
+### 需要手动完成的配置
 
 以下配置需要在 GitHub 网页端完成：
 
-1. **团队管理**（Settings > Collaborators and teams）
-   - 创建 `Maintainers` 团队
-   - 添加维护者成员
+#### 1. 团队管理 ⏸️
+进入 `Settings > Collaborators and teams`:
+- [ ] 创建 `Maintainers` 团队（Write 权限）
+- [ ] 创建 `Contributors` 团队（Read 权限）
+- [ ] 添加维护者成员
 
-2. **Actions 权限**（Settings > Actions > General）
-   - 已配置为允许所有 Actions
-   - Workflow 权限为读取
+#### 2. 仓库主题补充 ⏸️
+进入 `Settings > About > Topics`:
+- [ ] 手动添加：`python`, `knative`, `serverless`
 
-3. **Security**（Settings > Security）
-   - Dependabot 已启用
-   - 建议启用 Code scanning
+#### 3. 安全设置建议 ⏸️
+进入 `Settings > Security`:
+- [ ] 启用 Code scanning（可选）
+- [ ] 启用 Secret scanning（已启用）
+- [x] Dependabot alerts（已启用）
 
 ---
 
-**最后更新**: $(date +%Y-%m-%d)
-**配置执行者**: GitHub CLI (gh)
+## 🎉 配置验证
+
+运行以下命令验证配置：
+
+```bash
+# 查看分支保护规则
+gh api /repos/The-Agent-Builder/Prefab-Releases/branches/main/protection | jq
+
+# 查看仓库配置
+gh repo view The-Agent-Builder/Prefab-Releases --json hasIssuesEnabled,hasDiscussionsEnabled,hasProjectsEnabled
+
+# 查看所有工作流
+gh workflow list -R The-Agent-Builder/Prefab-Releases
+
+# 查看 Dependabot 配置
+cat .github/dependabot.yml
+
+# 查看 Issue 模板
+ls -la .github/ISSUE_TEMPLATE/
+```
+
+---
+
+**配置完成时间**: 2025-10-15  
+**配置执行者**: GitHub CLI (gh)  
+**分支保护生效时间**: 2025-10-15 14:30 UTC+8  
+**相关 PR**: [#4 - 完善仓库配置和自动化](https://github.com/The-Agent-Builder/Prefab-Releases/pull/4)
+
+---
+
+**重要提示**：从配置分支保护规则开始，所有对 `main` 分支的修改都必须通过 Pull Request！
+
+---
+
+如有问题，请联系平台技术团队或在 Discussions 中提问。

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 文档
+    url: https://github.com/The-Agent-Builder/Prefab-Releases/blob/main/README.md
+    about: 查看完整文档
+  - name: 💬 讨论
+    url: https://github.com/The-Agent-Builder/Prefab-Releases/discussions
+    about: 提问和讨论

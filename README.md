@@ -133,7 +133,7 @@ prefab-releases/
 | `version` | string | ✅ | 遵循语义化版本规范，格式：`major.minor.patch` |
 | `author` | string | ✅ | GitHub 用户名，1-39 字符 |
 | `repo_url` | string | ✅ | 必须是 `https://github.com/` 开头的有效 URL |
-| `artifact_url` | string | ✅ | 必须是 `.whl` 结尾的有效 URL，可公开访问 |
+| ~~`artifact_url`~~ | ~~string~~ | ❌ | **已移除**，自动从 `repo_url` + `version` + `id` 构造 |
 | `name` | string | ✅ | 预制件显示名称，3-100 字符 |
 | `description` | string | ✅ | 功能描述，10-500 字符 |
 | `tags` | array | ❌ | 标签列表，用于分类和搜索，最多 10 个 |
@@ -151,11 +151,11 @@ prefab-releases/
 当你创建或更新 PR 时，会自动执行以下检查：
 
 1. **文件变更检查**：确保只修改了 `community-prefabs.json`
-2. **提取变更**：识别新增或修改的条目
+2. **提取变更**：识别新增、版本更新或元数据修改
 3. **Schema 验证**：验证 JSON 格式和字段完整性
-4. **URL 可达性**：检查 `artifact_url` 是否可访问
+4. **URL 可达性**：检查自动构造的 `.whl` URL 是否可访问
 5. **构件验证**：
-   - 下载 `.whl` 文件
+   - 下载 `.whl` 文件（URL 自动构造）
    - 解压并查找 `prefab-manifest.json`
    - 验证 manifest 中的 `id` 和 `version` 与 PR 一致
 6. **重复检查**：确保没有重复的 (id, version) 组合
@@ -164,18 +164,20 @@ prefab-releases/
 
 ### 部署同步机制
 
-本仓库采用**被动同步**模式：
+本仓库采用 **Webhook 推送模式**：
 
 1. **索引文件**：`community-prefabs.json` 作为权威数据源
-2. **轮询机制**：部署服务定时（如每 5 分钟）轮询此文件
-3. **自动部署**：检测到新版本时，服务自动下载并部署
-4. **解耦设计**：本仓库不依赖任何部署服务的实现细节
+2. **自动触发**：PR 合并到 main 时，GitHub Actions 自动触发部署
+3. **Webhook 调用**：通过 HMAC-SHA256 签名的 HTTP POST 请求通知部署服务
+4. **实时部署**：部署服务收到请求后立即处理，实现秒级响应
+5. **解耦设计**：部署服务可以独立升级，只需保持 API 兼容
 
 **优势**：
-- ✅ 简单可靠，无需配置 Webhook
-- ✅ 部署服务可以独立升级
-- ✅ 支持多个部署服务同时使用
-- ✅ 易于备份和恢复
+- ✅ 实时响应，无延迟（相比轮询模式的 5 分钟延迟）
+- ✅ 资源高效，按需触发（无需持续轮询）
+- ✅ 安全验证，签名保证请求合法性
+- ✅ 状态可查，支持通过 job_id 查询部署进度
+- ✅ 易于扩展，支持多个部署服务订阅
 
 ## 🛡️ 安全性
 
